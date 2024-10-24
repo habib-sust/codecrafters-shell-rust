@@ -1,6 +1,7 @@
 use core::str;
 #[allow(unused_imports)]
 use std::io::{self, Write};
+use std::process::exit;
 
 fn main() {
     // Wait for user input
@@ -11,23 +12,22 @@ fn main() {
         let mut input = String::new();
         stdin.read_line(&mut input).unwrap();
 
-        match input.trim() {
-            "exit 0" => std::process::exit(0),
-            command => print_echo(command),
-        };
+        handle_command(input.trim());
     }
 }
 
-fn print_echo(command: &str) {
-    // match command.strip_prefix("echo") {
-    //     Some(reminder) => println!("{}", reminder.trim()),
-    //     None => println!("echo command not found"),
-    // };
+fn handle_command(command: &str) {
+    let tokens: Vec<&str> = command.split(' ').collect();
 
-    // Using if let
-    if let Some(reminder) = command.strip_prefix("echo") {
-        println!("{}", reminder.trim())
-    } else {
-        println!("{}: command not found", command)
+    // Slice
+    match tokens[..] {
+        ["exit", code] => exit_with_code(code),
+        ["echo", ..] => println!("{}", tokens[1..].join(" ")),
+        _ => println!("{}: command not found", command),
     }
+}
+
+fn exit_with_code(code: &str) {
+    let code = code.parse::<i32>().unwrap();
+    std::process::exit(code);
 }
