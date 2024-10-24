@@ -10,11 +10,9 @@ fn main() {
         let mut input = String::new();
         stdin.read_line(&mut input).unwrap();
 
-        let trimmed_input = input.trim();
-        if trimmed_input == "exit 0" {
-            std::process::exit(0);
-        } else {
-            println!("{}: command not found", trimmed_input);
-        }
+        match input.trim() {
+            "exit 0" => std::process::exit(0),
+            command => println!("{}: command not found", command),
+        };
     }
 }
