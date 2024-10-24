@@ -1,3 +1,4 @@
+use core::str;
 #[allow(unused_imports)]
 use std::io::{self, Write};
 
@@ -12,7 +13,19 @@ fn main() {
 
         match input.trim() {
             "exit 0" => std::process::exit(0),
-            command => println!("{}: command not found", command),
+            command => print_echo(command),
         };
+    }
+}
+
+fn print_echo(command: &str) {
+    // match command.strip_prefix("echo") {
+    //     Some(reminder) => println!("{}", reminder),
+    //     None => println!("echo command not found"),
+    // };
+
+    // Using if let
+    if let Some(reminder) = command.strip_prefix("echo") {
+        println!("{}", reminder)
     }
 }
