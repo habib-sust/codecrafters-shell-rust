@@ -27,5 +27,7 @@ fn print_echo(command: &str) {
     // Using if let
     if let Some(reminder) = command.strip_prefix("echo") {
         println!("{}", reminder.trim())
+    } else {
+        println!("{}: command not found", command)
     }
 }
