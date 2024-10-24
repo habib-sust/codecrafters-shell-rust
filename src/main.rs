@@ -20,12 +20,12 @@ fn main() {
 
 fn print_echo(command: &str) {
     // match command.strip_prefix("echo") {
-    //     Some(reminder) => println!("{}", reminder),
+    //     Some(reminder) => println!("{}", reminder.trim()),
     //     None => println!("echo command not found"),
     // };
 
     // Using if let
     if let Some(reminder) = command.strip_prefix("echo") {
-        println!("{}", reminder)
+        println!("{}", reminder.trim())
     }
 }
