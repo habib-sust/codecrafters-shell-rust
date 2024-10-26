@@ -38,15 +38,10 @@ fn handle_command(command: &str) {
 }
 
 fn handle_pwd_command(command: &str) {
-    let directory = Command::new(command).output();
-    // println!("{}", directory.display());
+    let directory = env::current_dir();
 
     match directory {
-        Ok(result) => {
-            let output = String::from_utf8_lossy(&result.stdout);
-            println!("{}", output.trim_end());
-        }
-
+        Ok(result) => println!("{}", result.display()),
         Err(_) => command_not_found(command),
     }
 }
