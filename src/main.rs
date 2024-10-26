@@ -54,12 +54,12 @@ fn handle_external_run(command: &str) {
         Ok(executalbe) => {
             // Trim the output to remove extra whitespace/newlines
             let output = String::from_utf8_lossy(&executalbe.stdout);
-            print!("{}", output.trim_end()); // Using print! instead of println!
+            println!("{}", output.trim_end()); // Using print! instead of println!
 
-            // Only print a newline if the output doesn't end with one
-            if !output.ends_with("\n") {
-                println!();
-            }
+            // // Only print a newline if the output doesn't end with one
+            // if !output.ends_with("\n") {
+            //     println!();
+            // }
         }
 
         Err(_) => command_not_found(command),
