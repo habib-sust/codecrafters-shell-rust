@@ -44,13 +44,13 @@ fn handle_external_run(command: &str) {
             .args(commands[1..].iter())
             .output()
         {
-            println!("{:?}", executable)
+            println!("{:}", String::from_utf8_lossy(&executable.stdout));
         } else {
             command_not_found(command);
         }
     } else {
         if let Ok(executable) = Command::new(commands[0]).output() {
-            println!("{:?}", executable);
+            println!("{:}", String::from_utf8_lossy(&executable.stdout));
         } else {
             command_not_found(command);
         }
