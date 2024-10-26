@@ -54,33 +54,11 @@ fn handle_external_run(command: &str) {
         Ok(executalbe) => {
             // Trim the output to remove extra whitespace/newlines
             let output = String::from_utf8_lossy(&executalbe.stdout);
-            println!("{}", output.trim_end()); // Using print! instead of println!
-
-            // // Only print a newline if the output doesn't end with one
-            // if !output.ends_with("\n") {
-            //     println!();
-            // }
+            println!("{}", output.trim_end());
         }
 
         Err(_) => command_not_found(command),
     }
-
-    // if commands.len() > 1 {
-    //     if let Ok(executable) = Command::new(commands[0])
-    //         .args(commands[1..].iter())
-    //         .output()
-    //     {
-    //         println!("{:}", String::from_utf8_lossy(&executable.stdout));
-    //     } else {
-    //         command_not_found(command);
-    //     }
-    // } else {
-    //     if let Ok(executable) = Command::new(commands[0]).output() {
-    //         println!("{:}", String::from_utf8_lossy(&executable.stdout));
-    //     } else {
-    //         command_not_found(command);
-    //     }
-    // }
 }
 
 fn command_not_found(command: &str) {
