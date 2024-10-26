@@ -1,5 +1,6 @@
 use core::str;
 use std::collections::HashSet;
+use std::process::Command;
 
 #[allow(unused_imports)]
 use std::io::{self, Write};
@@ -26,8 +27,38 @@ fn handle_command(command: &str) {
         ["exit", code] => exit_with_code(code),
         ["echo", ..] => println!("{}", tokens[1..].join(" ")),
         ["type", cmd] => handle_type_command(cmd),
-        _ => println!("{}: command not found", command),
+        _ => handle_external_run(command),
     }
+}
+
+fn handle_external_run(command: &str) {
+    let commands: Vec<&str> = command.split(' ').collect();
+
+    if commands.is_empty() {
+        command_not_found(command);
+        return;
+    }
+
+    if commands.len() > 1 {
+        if let Ok(executable) = Command::new(commands[0])
+            .args(commands[1..].iter())
+            .output()
+        {
+            println!("{:?}", executable)
+        } else {
+            command_not_found(command);
+        }
+    } else {
+        if let Ok(executable) = Command::new(commands[0]).output() {
+            println!("{:?}", executable);
+        } else {
+            command_not_found(command);
+        }
+    }
+}
+
+fn command_not_found(command: &str) {
+    println!("{}: command not found", command);
 }
 
 fn handle_type_command(command: &str) {
@@ -47,6 +78,10 @@ fn handle_type_command(command: &str) {
         } else {
             println!("{}: not found", command)
         }
+
+        // let foo = Command::new("echo")
+        //                       .arg("hello")
+        //                       .output().unwrap();
     }
 }
 
