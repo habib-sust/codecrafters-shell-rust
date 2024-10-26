@@ -15,6 +15,10 @@ fn main() {
         let mut input = String::new();
         stdin.read_line(&mut input).unwrap();
 
+        if input.trim().is_empty() {
+            continue;
+        }
+
         handle_command(input.trim());
     }
 }
@@ -34,7 +38,7 @@ fn handle_command(command: &str) {
 fn handle_external_run(command: &str) {
     let commands: Vec<&str> = command.split(' ').collect();
 
-    if command.is_empty() {
+    if commands.is_empty() {
         return;
     }
 
