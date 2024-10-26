@@ -43,7 +43,7 @@ fn handle_type_command(command: &str) {
         if let Some(path) =
             splits.find(|path| std::fs::metadata(format!("{}/{}", path, command)).is_ok())
         {
-            println!("{} is {}", command, path);
+            println!("{} is {}/{}", command, path, command);
         } else {
             println!("{}: not found", command)
         }
