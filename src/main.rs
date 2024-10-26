@@ -1,6 +1,6 @@
 use core::str;
-use std::collections::HashSet;
 use std::process::Command;
+use std::{collections::HashSet, env};
 
 #[allow(unused_imports)]
 use std::io::{self, Write};
@@ -28,7 +28,7 @@ fn handle_command(command: &str) {
 
     // Slice
     match tokens[..] {
-        ["pwd"] => handle_pwd_command(command),
+        ["pwd"] if tokens.len() == 1 => handle_pwd_command(),
         ["pwd", ..] => command_not_found(command),
         ["exit", code] => exit_with_code(code),
         ["echo", ..] => println!("{}", tokens[1..].join(" ")),
@@ -37,17 +37,18 @@ fn handle_command(command: &str) {
     }
 }
 
-fn handle_pwd_command(command: &str) {
-    let directory = Command::new("pwd").output();
+fn handle_pwd_command() {
+    let directory = env::current_dir().unwrap();
+    println!("{}", directory.display());
 
-    match directory {
-        Ok(result) => {
-            let output = String::from_utf8_lossy(&result.stdout);
-            println!("{}", output.trim_end());
-        }
+    // match directory {
+    //     Ok(result) => {
+    //         let output = String::from_utf8_lossy(&result.stdout);
+    //         println!("{}", output.trim_end());
+    //     }
 
-        Err(_) => command_not_found(command),
-    }
+    //     Err(_) => command_not_found(command),
+    // }
 }
 fn handle_external_run(command: &str) {
     let commands: Vec<&str> = command.split(' ').collect();
