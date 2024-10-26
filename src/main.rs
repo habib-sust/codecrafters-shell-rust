@@ -29,6 +29,7 @@ fn handle_command(command: &str) {
     // Slice
     match tokens[..] {
         ["pwd"] => handle_pwd_command(command),
+        ["pwd", ..] => command_not_found(command),
         ["exit", code] => exit_with_code(code),
         ["echo", ..] => println!("{}", tokens[1..].join(" ")),
         ["type", cmd] => handle_type_command(cmd),
@@ -37,7 +38,7 @@ fn handle_command(command: &str) {
 }
 
 fn handle_pwd_command(command: &str) {
-    let directory = Command::new(command).output();
+    let directory = Command::new("pwd").output();
 
     match directory {
         Ok(result) => {
