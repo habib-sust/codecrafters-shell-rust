@@ -79,7 +79,7 @@ fn command_not_found(command: &str) {
 }
 
 fn handle_type_command(command: &str) {
-    let shell_builtin_commands = HashSet::from(["echo", "exit", "type"]);
+    let shell_builtin_commands = HashSet::from(["echo", "exit", "type", "pwd"]);
     let path_env = std::env::var("PATH").unwrap();
 
     if shell_builtin_commands.contains(command) {
