@@ -28,6 +28,7 @@ fn handle_command(command: &str) {
 
     // Slice
     match tokens[..] {
+        ["pwd"] => handle_pwd_command(command),
         ["exit", code] => exit_with_code(code),
         ["echo", ..] => println!("{}", tokens[1..].join(" ")),
         ["type", cmd] => handle_type_command(cmd),
@@ -35,6 +36,18 @@ fn handle_command(command: &str) {
     }
 }
 
+fn handle_pwd_command(command: &str) {
+    let directory = Command::new(command).output();
+
+    match directory {
+        Ok(result) => {
+            let output = String::from_utf8_lossy(&result.stdout);
+            println!("{}", output.trim_end());
+        }
+
+        Err(_) => command_not_found(command),
+    }
+}
 fn handle_external_run(command: &str) {
     let commands: Vec<&str> = command.split(' ').collect();
 
