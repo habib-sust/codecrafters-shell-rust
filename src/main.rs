@@ -34,8 +34,7 @@ fn handle_command(command: &str) {
 fn handle_external_run(command: &str) {
     let commands: Vec<&str> = command.split(' ').collect();
 
-    if commands.is_empty() {
-        command_not_found(command);
+    if command.is_empty() {
         return;
     }
 
