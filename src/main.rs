@@ -1,4 +1,5 @@
 use core::str;
+use std::path::Path;
 use std::process::Command;
 use std::{collections::HashSet, env};
 
@@ -33,7 +34,19 @@ fn handle_command(command: &str) {
         ["exit", code] => exit_with_code(code),
         ["echo", ..] => println!("{}", tokens[1..].join(" ")),
         ["type", cmd] => handle_type_command(cmd),
+        ["cd", path] => handle_cd_command(path),
         _ => handle_external_run(command),
+    }
+}
+
+fn handle_cd_command(path: &str) {
+    match env::set_current_dir(Path::new(path)) {
+        Ok(_) => {
+            // if let Ok(current_dir) = env::current_dir() {
+            //     println!("{}", current_dir.display());
+            // }
+        }
+        Err(_) => println!("cd: {}: No such file or directory", path),
     }
 }
 
