@@ -48,11 +48,11 @@ fn handle_echo_command(s: &str) {
     }
 }
 fn is_surrounded_by_quote(s: &str) -> bool {
-    s.starts_with('\'') && s.ends_with('\'') || s.starts_with('\"') && s.ends_with('\"')
+    s.starts_with('\'') && s.ends_with('\'')
 }
 
 fn remove_quote(s: &str) -> String {
-    s.trim_matches(|c| c == '"' || c == '\'').to_string()
+    s.trim_matches('\'').to_string()
 }
 
 fn handle_cd_command(path: &str) {
