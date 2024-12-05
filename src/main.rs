@@ -33,11 +33,26 @@ fn handle_command(command: &str) {
         ["pwd"] if tokens.len() == 1 => handle_pwd_command(command),
         ["pwd", ..] => command_not_found(command),
         ["exit", code] => exit_with_code(code),
-        ["echo", ..] => println!("{}", tokens[1..].join(" ")),
+        ["echo", ..] => handle_echo_command(&tokens[1..].join(" ")),
         ["type", cmd] => handle_type_command(cmd),
         ["cd", path] => handle_cd_command(path),
         _ => handle_external_run(command),
     }
+}
+
+fn handle_echo_command(s: &str) {
+    if is_surrounded_by_quote(s) {
+        println!("{}", remove_quote(s));
+    } else {
+        println!("{}", s);
+    }
+}
+fn is_surrounded_by_quote(s: &str) -> bool {
+    s.starts_with('\'') && s.ends_with('\'') || s.starts_with('\"') && s.ends_with('\"')
+}
+
+fn remove_quote(s: &str) -> String {
+    s.trim_matches(|c| c == '"' || c == '\'').to_string()
 }
 
 fn handle_cd_command(path: &str) {
