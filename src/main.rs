@@ -44,7 +44,7 @@ fn handle_echo_command(s: &str) {
     if is_surrounded_by_quote(s) {
         println!("{}", remove_quote(s));
     } else {
-        println!("{}", s);
+        println!("{}", s.split_whitespace().collect::<Vec<&str>>().join(" "));
     }
 }
 fn is_surrounded_by_quote(s: &str) -> bool {
