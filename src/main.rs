@@ -54,7 +54,7 @@ fn hanlde_cat_command(s: &str) {
 }
 
 fn extract_quoted_string(s: &str) -> Vec<String> {
-    s.split('\'')
+    s.split(['\'', '"'])
         .filter_map(|part| {
             let trimmed = part.trim();
             if trimmed.is_empty() {
@@ -73,11 +73,11 @@ fn handle_echo_command(s: &str) {
     }
 }
 fn is_surrounded_by_quote(s: &str) -> bool {
-    s.starts_with('\'') && s.ends_with('\'')
+    s.starts_with('\'') && s.ends_with('\'') || s.starts_with('"') && s.ends_with('"')
 }
 
 fn remove_quote(s: &str) -> String {
-    s.trim_matches('\'').to_string()
+    s.trim_matches(['\'', '"']).to_string()
 }
 
 fn handle_cd_command(path: &str) {
