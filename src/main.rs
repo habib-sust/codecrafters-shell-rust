@@ -66,18 +66,38 @@ fn extract_quoted_string(s: &str) -> Vec<String> {
         .collect()
 }
 fn handle_echo_command(s: &str) {
-    if is_surrounded_by_quote(s) {
-        println!("{}", remove_quote(s));
+    if is_surrounded_by_single_quote(s) {
+        println!("{}", remove_single_quote(s));
+    } else if is_surrounded_by_double_quote(s) {
+        println!("{}", remove_double_quote(s));
     } else {
         println!("{}", s.split_whitespace().collect::<Vec<&str>>().join(" "));
     }
 }
-fn is_surrounded_by_quote(s: &str) -> bool {
-    s.starts_with('\'') && s.ends_with('\'') || s.starts_with('"') && s.ends_with('"')
+fn is_surrounded_by_single_quote(s: &str) -> bool {
+    s.starts_with('\'') && s.ends_with('\'')
 }
 
-fn remove_quote(s: &str) -> String {
-    s.split(['\'', '"'])
+fn is_surrounded_by_double_quote(s: &str) -> bool {
+    s.starts_with('"') && s.ends_with('"')
+}
+
+fn remove_single_quote(s: &str) -> String {
+    s.split('\'')
+        .filter_map(|part| {
+            let trimmed = part.trim();
+            if trimmed.is_empty() {
+                None
+            } else {
+                Some(trimmed)
+            }
+        })
+        .collect::<Vec<&str>>()
+        .join(" ")
+}
+
+fn remove_double_quote(s: &str) -> String {
+    s.split('"')
         .filter_map(|part| {
             let trimmed = part.trim();
             if trimmed.is_empty() {
