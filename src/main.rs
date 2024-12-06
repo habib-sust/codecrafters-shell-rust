@@ -41,18 +41,16 @@ fn handle_command(command: &str) {
 }
 
 fn hanlde_cat_command(s: &str) {
-    let file_names = extract_quoted_string(s);
-    let first = &file_names[0];
-    let last = &file_names[1];
+    let file_names = &extract_quoted_string(s);
+    let mut output = Vec::new();
+    for file in file_names {
+        let content = std::fs::read_to_string(file)
+            .expect(&format!("unable to read from file name: {}", file))
+            .replace("\n", "");
+        output.push(content);
+    }
 
-    let first_content = std::fs::read_to_string(first)
-        .expect(&format!("Unable to read from file name: {}", first))
-        .replace("\n", "");
-    let last_content = std::fs::read_to_string(last)
-        .expect(&format!("Unable to read from file name: {}", last))
-        .replace("\n", "");
-
-    println!("{} {}", first_content, last_content);
+    println!("{}", output.join(" "));
 }
 
 fn extract_quoted_string(s: &str) -> Vec<String> {
