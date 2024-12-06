@@ -77,7 +77,17 @@ fn is_surrounded_by_quote(s: &str) -> bool {
 }
 
 fn remove_quote(s: &str) -> String {
-    s.trim_matches(['\'', '"']).to_string()
+    s.split(['\'', '"'])
+        .filter_map(|part| {
+            let trimmed = part.trim();
+            if trimmed.is_empty() {
+                None
+            } else {
+                Some(trimmed)
+            }
+        })
+        .collect::<Vec<&str>>()
+        .join(" ")
 }
 
 fn handle_cd_command(path: &str) {
