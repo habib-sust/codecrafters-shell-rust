@@ -1,5 +1,4 @@
 use core::str;
-use std::path::Path;
 use std::path::PathBuf;
 use std::process::Command;
 use std::{collections::HashSet, env};
@@ -36,10 +35,38 @@ fn handle_command(command: &str) {
         ["echo", ..] => handle_echo_command(&tokens[1..].join(" ")),
         ["type", cmd] => handle_type_command(cmd),
         ["cd", path] => handle_cd_command(path),
+        ["cat", ..] => hanlde_cat_command(&tokens[1..].join(" ")),
         _ => handle_external_run(command),
     }
 }
 
+fn hanlde_cat_command(s: &str) {
+    let file_names = extract_quoted_string(s);
+    let first = &file_names[0];
+    let last = &file_names[1];
+
+    let first_content = std::fs::read_to_string(first)
+        .expect(&format!("Unable to read from file name: {}", first))
+        .replace("\n", "");
+    let last_content = std::fs::read_to_string(last)
+        .expect(&format!("Unable to read from file name: {}", last))
+        .replace("\n", "");
+
+    println!("{} {}", first_content, last_content);
+}
+
+fn extract_quoted_string(s: &str) -> Vec<String> {
+    s.split('\'')
+        .filter_map(|part| {
+            let trimmed = part.trim();
+            if trimmed.is_empty() {
+                None
+            } else {
+                Some(trimmed.to_string())
+            }
+        })
+        .collect()
+}
 fn handle_echo_command(s: &str) {
     if is_surrounded_by_quote(s) {
         println!("{}", remove_quote(s));
