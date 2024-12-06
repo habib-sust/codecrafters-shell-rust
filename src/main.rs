@@ -50,7 +50,7 @@ fn hanlde_cat_command(s: &str) {
         output.push(content);
     }
 
-    println!("{}", output.join(" "));
+    println!("{}", output.join(""));
 }
 
 fn extract_quoted_string(s: &str) -> Vec<String> {
